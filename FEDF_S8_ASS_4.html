@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>User Location</title>
+	</head>
+	<body style="text-align: center;">
+		<input type="button" value="Show my location" onclick="getUserLocation()"/>
+		<p id="userLoc"></p>
+	</body>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script>
+		var x = document.getElementById("userLoc");
+		
+		function getUserLocation() {
+			if(navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(printLoc);
+				x.innerHTML = "Loading...";
+			}
+			else {
+				x.innerHTML = "Geolocation is not supported."
+			}
+		}
+		
+		function printLoc(position) {
+			var jsonUrl = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + position.coords.latitude + ',' + position.coords.longitude + '&sensor=true';
+			$.getJSON(jsonUrl, function(data){
+				x.innerHTML = data.results[0].formatted_address;
+			});
+		}
+	</script>
+</html>
